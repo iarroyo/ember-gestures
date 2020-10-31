@@ -1,6 +1,8 @@
 
 import Modifier from 'ember-class-based-modifier';
 import { getOwner } from '@ember/application';
+import { set } from '@ember/object';
+import { htmlSafe } from '@ember/string';
 
 export default class RecognizeGestureModifier extends Modifier {
 
@@ -20,8 +22,8 @@ export default class RecognizeGestureModifier extends Modifier {
 
     didInstall() {
         if (!this.recognizers) return;
-        this.element.style['touch-action'] = 'manipulation';
-        this.element.style['-ms-touch-action'] = 'manipulation'; 
+        set(this.element, 'style', htmlSafe('touch-action:manipulation'));
+        set(this.element, 'style', htmlSafe('-ms-touch-action:manipulation'));
         this.recognizers.then ( (recognizers) => {
             if (this.isDestroyed) return;
             this.sortRecognizers(recognizers);
